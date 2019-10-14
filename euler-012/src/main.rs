@@ -135,3 +135,10 @@ const MIN_NUM_DIVISORS: usize = 500;
 fn main() {
     println!("{}", solve(MIN_NUM_DIVISORS));
 }
+
+const ANSWER: usize = 76576500;
+
+#[test]
+fn test() {
+    assert_eq!(ANSWER, solve(MIN_NUM_DIVISORS));
+}

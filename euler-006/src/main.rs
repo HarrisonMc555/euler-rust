@@ -34,3 +34,10 @@ const LIMIT: u64 = 100;
 fn main() {
     println!("{}", solve(LIMIT));
 }
+
+const ANSWER: u64 = 25164150;
+
+#[test]
+fn test() {
+    assert_eq!(ANSWER, solve(LIMIT));
+}

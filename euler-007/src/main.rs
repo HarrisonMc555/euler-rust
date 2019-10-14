@@ -48,3 +48,10 @@ const NTH: usize = 10_001;
 fn main() {
     println!("{}", solve(NTH));
 }
+
+const ANSWER: usize = 104743;
+
+#[test]
+fn test() {
+    assert_eq!(ANSWER, solve(NTH));
+}

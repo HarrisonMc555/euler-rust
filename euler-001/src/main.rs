@@ -27,3 +27,10 @@ const DIVISORS: [u32; 2] = [3, 5];
 fn main() {
     println!("{}", solve(&DIVISORS, LIMIT));
 }
+
+const ANSWER: u64 = 233168;
+
+#[test]
+fn test() {
+    assert_eq!(ANSWER, solve(&DIVISORS, LIMIT));
+}

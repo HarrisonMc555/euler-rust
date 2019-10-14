@@ -26,3 +26,10 @@ const WIDTH: i64 = 20;
 fn main() {
     println!("{}", solve(WIDTH));
 }
+
+const ANSWER: i64 = 137846528820;
+
+#[test]
+fn test() {
+    assert_eq!(ANSWER, solve(WIDTH));
+}

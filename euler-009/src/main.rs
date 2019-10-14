@@ -31,3 +31,10 @@ const SUM: u64 = 1_000;
 fn main() {
     println!("{}", solve(SUM));
 }
+
+const ANSWER: u64 = 31875000;
+
+#[test]
+fn test() {
+    assert_eq!(ANSWER, solve(SUM));
+}

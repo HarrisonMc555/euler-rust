@@ -59,3 +59,10 @@ const NUMBER: usize = 600_851_475_143;
 fn main() {
     println!("{:?}", solve(NUMBER));
 }
+
+const ANSWER: usize = 6857;
+
+#[test]
+fn test() {
+    assert_eq!(ANSWER, solve(NUMBER));
+}

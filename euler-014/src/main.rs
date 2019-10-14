@@ -64,3 +64,10 @@ const LIMIT: usize = 1_000_000;
 fn main() {
     println!("{}", solve(LIMIT));
 }
+
+const ANSWER: usize = 837799;
+
+#[test]
+fn test() {
+    assert_eq!(ANSWER, solve(LIMIT));
+}

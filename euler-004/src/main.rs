@@ -42,3 +42,10 @@ const NUM_DIGITS: u32 = 3;
 fn main() {
     println!("{}", solve(NUM_DIGITS));
 }
+
+const ANSWER: u32 = 906609;
+
+#[test]
+fn test() {
+    assert_eq!(ANSWER, solve(NUM_DIGITS));
+}

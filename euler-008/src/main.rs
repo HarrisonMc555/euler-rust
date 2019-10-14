@@ -66,3 +66,10 @@ fn solve(input: &str, num_digits: usize) -> u64 {
 fn main() {
     println!("{}", solve(INPUT, NUM_DIGITS));
 }
+
+const ANSWER: u64 = 23514624000;
+
+#[test]
+fn test() {
+    assert_eq!(ANSWER, solve(&INPUT, NUM_DIGITS));
+}

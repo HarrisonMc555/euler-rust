@@ -28,9 +28,9 @@ What is the greatest product of four adjacent numbers in the same direction (up,
 down, left, right, or diagonally) in the 20×20 grid?
  */
 
-type Grid = [[u32; GRID_WIDTH]; GRID_HEIGHT];
+type Grid = [[u64; GRID_WIDTH]; GRID_HEIGHT];
 
-fn max_horizontal_sequence(grid: &Grid, sequence_length: usize) -> u32 {
+fn max_horizontal_sequence(grid: &Grid, sequence_length: usize) -> u64 {
     grid.iter()
         .flat_map(|row| {
             row.windows(sequence_length)
@@ -40,7 +40,7 @@ fn max_horizontal_sequence(grid: &Grid, sequence_length: usize) -> u32 {
         .expect("no sequence found")
 }
 
-fn max_vertical_sequence(grid: &Grid, sequence_length: usize) -> u32 {
+fn max_vertical_sequence(grid: &Grid, sequence_length: usize) -> u64 {
     (0..GRID_WIDTH)
         .flat_map(|col| {
             grid.windows(sequence_length)
@@ -50,7 +50,7 @@ fn max_vertical_sequence(grid: &Grid, sequence_length: usize) -> u32 {
         .expect("no sequence found")
 }
 
-fn max_diagonal_down_right_sequence(grid: &Grid, sequence_length: usize) -> u32 {
+fn max_diagonal_down_right_sequence(grid: &Grid, sequence_length: usize) -> u64 {
     grid.windows(sequence_length)
         .flat_map(|window| {
             (0..GRID_WIDTH - sequence_length).map(move |start_col| {
@@ -65,7 +65,7 @@ fn max_diagonal_down_right_sequence(grid: &Grid, sequence_length: usize) -> u32 
         .expect("no sequence found")
 }
 
-fn max_diagonal_down_left_sequence(grid: &Grid, sequence_length: usize) -> u32 {
+fn max_diagonal_down_left_sequence(grid: &Grid, sequence_length: usize) -> u64 {
     grid.windows(sequence_length)
         .flat_map(|window| {
             (0..GRID_WIDTH - sequence_length).map(move |start_col| {
@@ -81,7 +81,7 @@ fn max_diagonal_down_left_sequence(grid: &Grid, sequence_length: usize) -> u32 {
         .expect("no sequence found")
 }
 
-fn solve(grid: &Grid, sequence_length: usize) -> u32 {
+fn solve(grid: &Grid, sequence_length: usize) -> u64 {
     let horizontal = max_horizontal_sequence(grid, sequence_length);
     let vertical = max_vertical_sequence(grid, sequence_length);
     let diagonal_down_right = max_diagonal_down_right_sequence(grid, sequence_length);
@@ -161,4 +161,11 @@ const SEQUENCE_LENGTH: usize = 4;
 
 fn main() {
     println!("{}", solve(&GRID, SEQUENCE_LENGTH));
+}
+
+const ANSWER: u64 = 70600674;
+
+#[test]
+fn test() {
+    assert_eq!(ANSWER, solve(&GRID, SEQUENCE_LENGTH));
 }
