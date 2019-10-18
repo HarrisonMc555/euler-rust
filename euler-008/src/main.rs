@@ -67,6 +67,7 @@ fn main() {
     println!("{}", solve(INPUT, NUM_DIGITS));
 }
 
+#[cfg(test)]
 const ANSWER: u64 = 23514624000;
 
 #[test]

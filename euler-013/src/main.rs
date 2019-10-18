@@ -152,6 +152,7 @@ fn main() {
     println!("{}", solve(&NUMBER_STRING_GRID, NUM_DIGITS));
 }
 
+#[cfg(test)]
 const ANSWER: &str = "5537376230";
 
 #[test]

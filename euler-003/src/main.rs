@@ -60,6 +60,7 @@ fn main() {
     println!("{:?}", solve(NUMBER));
 }
 
+#[cfg(test)]
 const ANSWER: usize = 6857;
 
 #[test]

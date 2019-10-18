@@ -22,6 +22,7 @@ fn main() {
     println!("{}", solve(BASE, EXPONENT));
 }
 
+#[cfg(test)]
 const ANSWER: u32 = 1366;
 
 #[test]

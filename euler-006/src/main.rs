@@ -35,6 +35,7 @@ fn main() {
     println!("{}", solve(LIMIT));
 }
 
+#[cfg(test)]
 const ANSWER: u64 = 25164150;
 
 #[test]

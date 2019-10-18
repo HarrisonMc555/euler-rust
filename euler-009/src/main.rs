@@ -32,6 +32,7 @@ fn main() {
     println!("{}", solve(SUM));
 }
 
+#[cfg(test)]
 const ANSWER: u64 = 31875000;
 
 #[test]

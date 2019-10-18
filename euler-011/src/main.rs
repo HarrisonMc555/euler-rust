@@ -163,6 +163,7 @@ fn main() {
     println!("{}", solve(&GRID, SEQUENCE_LENGTH));
 }
 
+#[cfg(test)]
 const ANSWER: u64 = 70600674;
 
 #[test]

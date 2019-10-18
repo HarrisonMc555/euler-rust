@@ -49,6 +49,7 @@ fn main() {
     println!("{}", solve(NTH));
 }
 
+#[cfg(test)]
 const ANSWER: usize = 104743;
 
 #[test]

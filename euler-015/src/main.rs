@@ -27,6 +27,7 @@ fn main() {
     println!("{}", solve(WIDTH));
 }
 
+#[cfg(test)]
 const ANSWER: i64 = 137846528820;
 
 #[test]

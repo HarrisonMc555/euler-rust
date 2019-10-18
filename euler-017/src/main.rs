@@ -31,6 +31,7 @@ fn main() {
     println!("{}", solve(BEGIN, END_INCLUSIVE));
 }
 
+#[cfg(test)]
 const ANSWER: usize = 21_124;
 
 #[test]

@@ -29,6 +29,7 @@ fn main() {
     println!("{}", solve(LIMIT));
 }
 
+#[cfg(test)]
 const ANSWER: usize = 142913828922;
 
 #[test]

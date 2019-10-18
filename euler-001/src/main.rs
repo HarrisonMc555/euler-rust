@@ -28,6 +28,7 @@ fn main() {
     println!("{}", solve(&DIVISORS, LIMIT));
 }
 
+#[cfg(test)]
 const ANSWER: u64 = 233168;
 
 #[test]

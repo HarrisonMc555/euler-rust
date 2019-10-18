@@ -43,6 +43,7 @@ fn main() {
     println!("{}", solve(NUM_DIGITS));
 }
 
+#[cfg(test)]
 const ANSWER: u32 = 906609;
 
 #[test]

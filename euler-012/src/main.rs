@@ -136,6 +136,7 @@ fn main() {
     println!("{}", solve(MIN_NUM_DIVISORS));
 }
 
+#[cfg(test)]
 const ANSWER: usize = 76576500;
 
 #[test]
