@@ -7,7 +7,6 @@ numbers from 1 to 20?
  */
 
 use multiset::HashMultiSet;
-use std::cmp;
 
 fn primes_below(limit: usize) -> Vec<usize> {
     let mut is_composite = vec![false; limit];
@@ -51,64 +50,12 @@ fn divisible_by(number: usize, divisor: usize) -> bool {
     number % divisor == 0
 }
 
-fn count_iter<'a, K: 'a>(multiset: &'a HashMultiSet<K>) -> CountIter<'a, K>
-where
-    K: Eq,
-    K: std::hash::Hash,
-{
-    CountIter {
-        iter: multiset.distinct_elements(),
-        multiset: multiset,
-    }
-}
-
-struct CountIter<'a, K: 'a>
-where
-    K: Eq,
-    K: std::hash::Hash,
-{
-    iter: std::collections::hash_map::Keys<'a, K, usize>,
-    multiset: &'a HashMultiSet<K>,
-}
-
-impl<'a, K> Iterator for CountIter<'a, K>
-where
-    K: Eq,
-    K: std::hash::Hash,
-{
-    type Item = (&'a K, usize);
-
-    fn next(&mut self) -> Option<Self::Item> {
-        self.iter
-            .next()
-            .map(|key| (key, self.multiset.count_of(key)))
-    }
-}
-
-fn union<K>(multiset1: &HashMultiSet<K>, multiset2: &HashMultiSet<K>) -> HashMultiSet<K>
-where
-    K: Eq,
-    K: std::hash::Hash,
-    K: std::fmt::Debug,
-    K: Clone,
-{
-    let mut result = HashMultiSet::new();
-    for (key, count1) in count_iter(multiset1) {
-        let count2 = multiset2.count_of(key);
-        result.insert_times(key.clone(), cmp::max(count1, count2));
-    }
-    for (key, count2) in count_iter(multiset2) {
-        if !result.contains(key) {
-            result.insert_times(key.clone(), count2);
-        }
-    }
-    result
-}
-
 fn solve(limit: usize) -> usize {
     let all_factors = (2..=limit)
         .map(|num| get_factors(num))
-        .fold(HashMultiSet::new(), |acc, factors| union(&acc, &factors));
+        .fold(HashMultiSet::new(), |acc, factors| {
+            acc.union(&factors).cloned().collect()
+        });
     all_factors.iter().product()
 }
 

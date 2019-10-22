@@ -63,43 +63,12 @@ fn divisible_by(number: usize, divisor: usize) -> bool {
     number % divisor == 0
 }
 
-fn count_iter<'a, K: 'a>(multiset: &'a HashMultiSet<K>) -> CountIter<'a, K>
-where
-    K: Eq,
-    K: std::hash::Hash,
-{
-    CountIter {
-        iter: multiset.distinct_elements(),
-        multiset: multiset,
-    }
-}
-
-struct CountIter<'a, K: 'a>
-where
-    K: Eq,
-    K: std::hash::Hash,
-{
-    iter: std::collections::hash_map::Keys<'a, K, usize>,
-    multiset: &'a HashMultiSet<K>,
-}
-
-impl<'a, K> Iterator for CountIter<'a, K>
-where
-    K: Eq,
-    K: std::hash::Hash,
-{
-    type Item = (&'a K, usize);
-
-    fn next(&mut self) -> Option<Self::Item> {
-        self.iter
-            .next()
-            .map(|key| (key, self.multiset.count_of(key)))
-    }
-}
-
 fn num_divisors(number: usize, primes: &[usize]) -> usize {
     let factors = get_factors(number, primes);
-    count_iter(&factors).map(|(_, count)| count + 1).product()
+    factors
+        .distinct_elements()
+        .map(|factor| factors.count_of(factor) + 1)
+        .product()
 }
 
 struct TriangleNumbers {
