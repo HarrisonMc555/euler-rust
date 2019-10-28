@@ -52,7 +52,7 @@ fn divisible_by(number: usize, divisor: usize) -> bool {
 
 fn solve(limit: usize) -> usize {
     let all_factors = (2..=limit)
-        .map(|num| get_factors(num))
+        .map(get_factors)
         .fold(HashMultiSet::new(), |acc, factors| {
             acc.union(&factors).cloned().collect()
         });

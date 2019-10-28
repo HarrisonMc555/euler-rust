@@ -29,9 +29,8 @@ fn find_collatz_len(collatz_array: &mut [Option<usize>], number: usize) {
     let mut sequence = Vec::new();
     let mut number = number;
     loop {
-        match collatz_array.get(number) {
-            Some(Some(_)) => break,
-            _ => (),
+        if let Some(Some(_)) = collatz_array.get(number) {
+            break;
         }
         sequence.push(number);
         number = next_collatz(number);

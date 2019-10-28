@@ -35,7 +35,7 @@ impl Iterator for DayIter {
     type Item = NaiveDate;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let prev = self.day.clone();
+        let prev = self.day;
         self.day = self.day.succ();
         Some(prev)
     }

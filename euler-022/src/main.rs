@@ -14,11 +14,14 @@ What is the total of all the name scores in the file?
 use std::env;
 use std::fs;
 
+const LOWER_CASE_OFFSET: u8 = b'a';
+const UPPER_CASE_OFFSET: u8 = b'a';
+
 fn alphabetical_value(c: char) -> u8 {
     if 'a' <= c && c <= 'z' {
-        return c as u8 - 'a' as u8 + 1;
+        return c as u8 - LOWER_CASE_OFFSET;
     } else if 'A' <= c && c <= 'Z' {
-        return c as u8 - 'A' as u8 + 1;
+        return c as u8 - UPPER_CASE_OFFSET;
     }
     0
 }
@@ -32,7 +35,7 @@ fn normalize(entry: &str) -> &str {
 }
 
 fn solve(contents: &str) -> usize {
-    let mut names = contents.split(",").collect::<Vec<_>>();
+    let mut names = contents.split(',').collect::<Vec<_>>();
     names.sort();
     names
         .iter()

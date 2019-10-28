@@ -35,7 +35,7 @@ clever method! ;o)
 
 fn solve(triangle: &[Vec<u64>]) -> u64 {
     let mut best_nums: Vec<u64> = triangle[0].clone();
-    for row in triangle[1..].into_iter() {
+    for row in triangle[1..].iter() {
         let best_len = best_nums.len();
         let row_len = row.len();
         assert_eq!(row_len, best_len + 1);

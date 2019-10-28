@@ -86,15 +86,21 @@ fn solve(grid: &Grid, sequence_length: usize) -> u64 {
     let vertical = max_vertical_sequence(grid, sequence_length);
     let diagonal_down_right = max_diagonal_down_right_sequence(grid, sequence_length);
     let diagonal_down_left = max_diagonal_down_left_sequence(grid, sequence_length);
-    return [horizontal, vertical, diagonal_down_right, diagonal_down_left]
-        .iter()
-        .max()
-        .copied()
-        .unwrap();
+    [
+        horizontal,
+        vertical,
+        diagonal_down_right,
+        diagonal_down_left,
+    ]
+    .iter()
+    .max()
+    .copied()
+    .unwrap()
 }
 
 const GRID_WIDTH: usize = 20;
 const GRID_HEIGHT: usize = 20;
+#[allow(clippy::zero_prefixed_literal)]
 const GRID: Grid = [
     [
         08, 02, 22, 97, 38, 15, 00, 40, 00, 75, 04, 05, 07, 78, 52, 12, 50, 77, 91, 08,

@@ -17,8 +17,7 @@ fn solve(nth: usize, min_num: u8, max_num: u8) -> usize {
     from_digits(&digits)
 }
 
-fn find_permutation<T>(mut index: usize, mut options: Vec<T>) -> Vec<T>
-{
+fn find_permutation<T>(mut index: usize, mut options: Vec<T>) -> Vec<T> {
     let mut result = Vec::new();
     for num_left in (0..options.len()).rev() {
         let divisor = factorial(num_left);
@@ -34,7 +33,9 @@ fn factorial(num: usize) -> usize {
 }
 
 fn from_digits(digits: &[u8]) -> usize {
-    digits.iter().fold(0, |acc, digit| acc * BASE + (*digit as usize))
+    digits
+        .iter()
+        .fold(0, |acc, digit| acc * BASE + (*digit as usize))
 }
 
 const BASE: usize = 10;
