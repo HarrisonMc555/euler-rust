@@ -14,8 +14,8 @@ What is the total of all the name scores in the file?
 use std::env;
 use std::fs;
 
-const LOWER_CASE_OFFSET: u8 = b'a';
-const UPPER_CASE_OFFSET: u8 = b'a';
+const LOWER_CASE_OFFSET: u8 = b'a' - 1;
+const UPPER_CASE_OFFSET: u8 = b'A' - 1;
 
 fn alphabetical_value(c: char) -> u8 {
     if 'a' <= c && c <= 'z' {
