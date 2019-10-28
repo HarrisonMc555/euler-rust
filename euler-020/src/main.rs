@@ -39,4 +39,3 @@ const ANSWER: u64 = 648;
 fn test() {
     assert_eq!(ANSWER, solve(INPUT));
 }
-

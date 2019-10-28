@@ -24,8 +24,8 @@ What is the index of the first term in the Fibonacci sequence to contain 1000
 digits?
 */
 
-use num_traits::identities::One;
 use num_bigint::BigUint;
+use num_traits::identities::One;
 
 fn solve(num_digits: usize) -> usize {
     let index = Fibonacci::new()

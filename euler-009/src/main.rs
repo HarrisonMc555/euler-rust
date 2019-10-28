@@ -14,8 +14,7 @@ fn is_pythagorean_triplet(a: u64, b: u64, c: u64) -> bool {
 }
 
 fn sum_triplets(sum: u64) -> impl Iterator<Item = (u64, u64, u64)> {
-    (1..sum)
-        .flat_map(move |a| (a..sum-a).map(move |b| (a, b, sum - a - b)))
+    (1..sum).flat_map(move |a| (a..sum - a).map(move |b| (a, b, sum - a - b)))
 }
 
 fn solve(sum: u64) -> u64 {

@@ -43,7 +43,9 @@ fn factors_to_divisors(factors: &[(usize, usize)]) -> HashSet<usize> {
     (1..=count)
         .flat_map(|num| {
             let multiplier = factor.pow(num as u32);
-            rest_divisors.iter().map(move |divisor| divisor * multiplier)
+            rest_divisors
+                .iter()
+                .map(move |divisor| divisor * multiplier)
         })
         .chain(rest_divisors.iter().cloned())
         .collect()
