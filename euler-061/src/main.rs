@@ -30,7 +30,9 @@ each polygonal type: triangle, square, pentagonal, hexagonal, heptagonal, and
 octagonal, is represented by a different number in the set.
 */
 
+use enumset::{EnumSet, EnumSetType};
 use lazy_static::lazy_static;
+use std::collections::{HashMap, HashSet};
 
 type Num = usize;
 
@@ -42,18 +44,152 @@ lazy_static! {
     static ref MAX_NUM: Num = int_pow(BASE_NUM, NUM_DIGITS);
 }
 
+#[derive(EnumSetType, Debug)]
+pub enum Figurate {
+    Triangle,
+    Square,
+    Pentagonal,
+    Hexagonal,
+    Heptagonal,
+    Octagonal,
+}
+
+#[derive(Debug, Clone)]
+struct NumExtra {
+    num: Num,
+    leading_digits: Num,
+    trailing_digits: Num,
+    figurates: EnumSet<Figurate>,
+}
+
+impl NumExtra {
+    fn new(num: Num) -> Option<Self> {
+        let digits = get_digits(num)?;
+        let digits = digits.iter().map(|&d| d.into()).collect::<Vec<Num>>();
+        let leading_digits = digits[3] * BASE_NUM + digits[2];
+        let trailing_digits = digits[1] * BASE_NUM + digits[0];
+        Some(Self {
+            num,
+            leading_digits,
+            trailing_digits,
+            figurates: EnumSet::empty(),
+        })
+    }
+}
+
 fn main() {
-    const NUM: Num = 5;
-    let triangles = (1..=NUM).map(triangle_num).collect::<Vec<_>>();
-    let squares = (1..=NUM).map(square_num).collect::<Vec<_>>();
-    let pentagons = (1..=NUM).map(pentagonal_num).collect::<Vec<_>>();
-    let hexagons = (1..=NUM).map(hexagonal_num).collect::<Vec<_>>();
-    let heptagons = (1..=NUM).map(heptagonal_num).collect::<Vec<_>>();
-    let octagons = (1..=NUM).map(octagonal_num).collect::<Vec<_>>();
-    println!(
-        "{:?}\n{:?}\n{:?}\n{:?}\n{:?}\n{:?}",
-        triangles, squares, pentagons, hexagons, heptagons, octagons
-    );
+    let mut nums: HashMap<Num, NumExtra> = HashMap::new();
+    for figurate in EnumSet::all() {
+        for num in figurate_nums(NUM_DIGITS, figurate) {
+            let num_extra = nums
+                .entry(num)
+                .or_insert_with(|| NumExtra::new(num).unwrap());
+            num_extra.figurates |= figurate;
+        }
+    }
+    let mut by_leading_digits = HashMap::new();
+    for num_extra in nums.values() {
+        by_leading_digits
+            .entry(num_extra.leading_digits)
+            .or_insert_with(Vec::new)
+            .push(num_extra.clone());
+    }
+    let cycle = find_figurate_cycle(&by_leading_digits).expect("No solution found");
+    let sum: Num = cycle.into_iter().sum();
+    println!("{}", sum);
+}
+
+fn find_figurate_cycle(
+    by_leading_digits: &HashMap<Num, Vec<NumExtra>>,
+) -> Option<Vec<Num>> {
+    let mut cycle = Vec::new();
+    let mut seen_figurates = EnumSet::empty();
+    let mut seen_nums = HashSet::new();
+    find_figurate_cycle_helper(
+        by_leading_digits,
+        &mut cycle,
+        &mut seen_nums,
+        &mut seen_figurates,
+    )
+}
+
+fn find_figurate_cycle_helper(
+    by_leading_digits: &HashMap<Num, Vec<NumExtra>>,
+    cycle: &mut Vec<(NumExtra, Figurate)>,
+    seen_nums: &mut HashSet<Num>,
+    seen_figurates: &mut EnumSet<Figurate>,
+) -> Option<Vec<Num>> {
+    let first = match cycle.first() {
+        None => {
+            for num_extra in by_leading_digits.values().flat_map(|v| v.iter()) {
+                seen_nums.insert(num_extra.num);
+                for figurate in num_extra.figurates {
+                    if seen_figurates.contains(figurate) {
+                        continue;
+                    }
+                    cycle.push((num_extra.clone(), figurate));
+                    seen_figurates.insert(figurate);
+                    let result = find_figurate_cycle_helper(
+                        by_leading_digits,
+                        cycle,
+                        seen_nums,
+                        seen_figurates,
+                    );
+                    if result.is_some() {
+                        let cycle_string = cycle.iter().map(|ne| (ne.0.num, ne.1)).collect::<Vec<_>>();
+                        eprintln!("Cycle: {:?}", cycle_string);
+                        return result;
+                    }
+                    seen_figurates.remove(figurate);
+                    cycle.pop();
+                }
+                seen_nums.remove(&num_extra.num);
+            }
+            return None;
+        }
+        Some(first) => first,
+    };
+
+    let num_figurates = EnumSet::<Figurate>::variant_count() as usize;
+    if let Some(last) = cycle.get(num_figurates - 1) {
+        return if last.0.trailing_digits == first.0.leading_digits {
+            let cycle = cycle.iter().map(|ne| ne.0.num).collect();
+            Some(cycle)
+        } else {
+            None
+        };
+    }
+
+    let cur = match cycle.last() {
+        None => panic!("There was a first but not a last?"),
+        Some(cur) => cur,
+    };
+
+    let possible_next_nums = by_leading_digits
+        .get(&cur.0.trailing_digits)?
+        .iter()
+        .filter(|n| !seen_nums.contains(&n.num))
+        .collect::<Vec<_>>();
+    for num_extra in possible_next_nums {
+        seen_nums.insert(num_extra.num);
+        for figurate in num_extra.figurates {
+            if seen_figurates.contains(figurate) {
+                continue;
+            }
+            cycle.push((num_extra.clone(), figurate));
+            seen_figurates.insert(figurate);
+            let result =
+                find_figurate_cycle_helper(by_leading_digits, cycle, seen_nums, seen_figurates);
+            if result.is_some() {
+                return result;
+            }
+            seen_figurates.remove(figurate);
+            cycle.pop();
+        }
+        seen_nums.remove(&num_extra.num);
+    }
+
+    None
 }
 
 fn get_digits(x: Num) -> Option<[u8; NUM_DIGITS]> {
@@ -62,10 +198,10 @@ fn get_digits(x: Num) -> Option<[u8; NUM_DIGITS]> {
     }
     let mut digits = [0; NUM_DIGITS];
     let mut cur_base = 1;
-    for index in 0..NUM_DIGITS {
+    for digit in digits.iter_mut() {
         let next_base = cur_base * BASE_NUM;
-        let digit = (x % next_base) / cur_base;
-        digits[index] = digit as u8;
+        let digit_value = (x % next_base) / cur_base;
+        *digit = digit_value as u8;
         cur_base = next_base;
     }
     Some(digits)
@@ -98,6 +234,38 @@ fn heptagonal_num(n: Num) -> Num {
 fn octagonal_num(n: Num) -> Num {
     n * (3 * n - 2)
 }
+
+fn figurate_num(n: Num, figurate: Figurate) -> Num {
+    match figurate {
+        Figurate::Triangle => triangle_num(n),
+        Figurate::Square => square_num(n),
+        Figurate::Pentagonal => pentagonal_num(n),
+        Figurate::Hexagonal => hexagonal_num(n),
+        Figurate::Heptagonal => heptagonal_num(n),
+        Figurate::Octagonal => octagonal_num(n),
+    }
+}
+
+fn figurate_nums(num_digits: usize, figurate: Figurate) -> impl Iterator<Item = Num> {
+    let min = int_pow(BASE_NUM, num_digits - 1);
+    let max = int_pow(BASE_NUM, num_digits);
+    (1..)
+        .map(move |n| figurate_num(n, figurate))
+        .skip_while(move |n| n < &min)
+        .take_while(move |n| n < &max)
+}
+
+// fn multi_intersection<T: Eq + Hash + Clone>(sets: &[HashSet<T>]) -> Vec<HashSet<T>> {
+//     let mut unique_sets = Vec::new();
+//     for (i, set) in sets.iter().enumerate() {
+//         let mut new_set = set.clone();
+//         for (_, other) in sets.iter().enumerate().filter(|(j, _)| j != &i) {
+//             new_set.retain(|x| !other.contains(x));
+//         }
+//         unique_sets.push(new_set);
+//     }
+//     unique_sets
+// }
 
 #[cfg(test)]
 mod test {
@@ -171,4 +339,82 @@ mod test {
             assert!(get_digits(num).is_none());
         }
     }
+
+    #[test]
+    fn test_triangle_nums() {
+        let expected = vec![1, 3, 6, 10, 15];
+        let actual = figurate_nums(1, Figurate::Triangle)
+            .chain(figurate_nums(2, Figurate::Triangle))
+            .take(expected.len())
+            .collect::<Vec<_>>();
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_square_nums() {
+        let expected = vec![1, 4, 9, 16, 25];
+        let actual = figurate_nums(1, Figurate::Square)
+            .chain(figurate_nums(2, Figurate::Square))
+            .take(expected.len())
+            .collect::<Vec<_>>();
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_pentagonal_nums() {
+        let expected = vec![1, 5, 12, 22, 35];
+        let actual = figurate_nums(1, Figurate::Pentagonal)
+            .chain(figurate_nums(2, Figurate::Pentagonal))
+            .take(expected.len())
+            .collect::<Vec<_>>();
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_hexagonal_nums() {
+        let expected = vec![1, 6, 15, 28, 45];
+        let actual = figurate_nums(1, Figurate::Hexagonal)
+            .chain(figurate_nums(2, Figurate::Hexagonal))
+            .take(expected.len())
+            .collect::<Vec<_>>();
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_heptagonal_nums() {
+        let expected = vec![1, 7, 18, 34, 55];
+        let actual = figurate_nums(1, Figurate::Heptagonal)
+            .chain(figurate_nums(2, Figurate::Heptagonal))
+            .take(expected.len())
+            .collect::<Vec<_>>();
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_octagonal_nums() {
+        let expected = vec![1, 8, 21, 40, 65];
+        let actual = figurate_nums(1, Figurate::Octagonal)
+            .chain(figurate_nums(2, Figurate::Octagonal))
+            .take(expected.len())
+            .collect::<Vec<_>>();
+        assert_eq!(actual, expected);
+    }
+
+    // #[test]
+    // fn test_multi_intersection() {
+    //     let vecs = vec![
+    //         vec![1, 2, 3, 4, 5],
+    //         vec![2, 4, 6, 8, 10],
+    //         vec![3, 6, 9, 12, 15],
+    //     ];
+    //     let sets = vecs.into_iter().map(|v| v.into_iter().collect()).collect::<Vec<_>>();
+    //     let actual_sets = multi_intersection(&sets[..]);
+    //     let expected_vecs = vec![
+    //         vec![1, 5],
+    //         vec![8, 10],
+    //         vec![9, 12, 15],
+    //     ];
+    //     let expected_sets = expected_vecs.into_iter().map(|v| v.into_iter().collect()).collect::<Vec<_>>();
+    //     assert_eq!(actual_sets, expected_sets);
+    // }
 }
