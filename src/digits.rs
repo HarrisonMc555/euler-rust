@@ -121,11 +121,11 @@ where
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.n == zero() {
-            if self.started {
-                return None;
+            return if self.started {
+                None
             } else {
                 self.started = true;
-                return Some(0);
+                Some(0)
             }
         }
         self.started = true;

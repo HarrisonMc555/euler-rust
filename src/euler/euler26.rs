@@ -63,17 +63,17 @@ impl Digits {
             num = rem * base;
             if let Some(index) = digits_rems.iter().position(|&(_, r)| r == rem) {
                 let (match_digit, _) = digits_rems[index];
-                if match_digit == quot {
-                    return Digits::new(
+                return if match_digit == quot {
+                    Digits::new(
                         from_digits_rems(&digits_rems[..index]),
                         from_digits_rems(&digits_rems[index..]),
-                    );
+                    )
                 } else {
                     digits_rems.push((quot, rem));
-                    return Digits::new(
+                    Digits::new(
                         from_digits_rems(&digits_rems[..index + 1]),
                         from_digits_rems(&digits_rems[index + 1..]),
-                    );
+                    )
                 }
             }
             digits_rems.push((quot, rem));
