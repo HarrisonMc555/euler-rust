@@ -56,7 +56,7 @@ fn is_multiplitied_pandigital(a: Num, b: Num) -> bool {
         }
         count += 1
     }
-    return count == 9;
+    count == 9
 }
 
 #[cfg(test)]

@@ -62,7 +62,7 @@ impl Formula {
         let (a, b) = self.as_tuple();
         (0..)
             .map(move |n| n * n + a * n + b)
-            .flat_map(|n| u64::try_from(n))
+            .flat_map(u64::try_from)
     }
 
     fn count_primes(&self, sieve: &Sieve) -> usize {

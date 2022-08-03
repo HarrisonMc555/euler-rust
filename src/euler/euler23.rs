@@ -77,7 +77,7 @@ fn divisible_by(number: usize, divisor: usize) -> bool {
 fn primes_below(limit: usize) -> Vec<usize> {
     let mut is_composite = vec![false; limit];
     let mut primes = Vec::new();
-    for num in (2..limit).map(|num| num) {
+    for num in 2..limit {
         if is_composite[num] {
             continue;
         }

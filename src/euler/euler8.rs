@@ -72,5 +72,5 @@ const ANSWER: u64 = 23514624000;
 
 #[test]
 fn test() {
-    assert_eq!(ANSWER, solve(&INPUT, NUM_DIGITS));
+    assert_eq!(ANSWER, solve(INPUT, NUM_DIGITS));
 }

@@ -39,8 +39,7 @@ fn solve(triangle: &[Vec<u64>]) -> u64 {
         let best_len = best_nums.len();
         let row_len = row.len();
         assert_eq!(row_len, best_len + 1);
-        let mut next_best_nums: Vec<u64> = Vec::new();
-        next_best_nums.push(best_nums[0] + row[0]);
+        let mut next_best_nums: Vec<u64> = vec![best_nums[0] + row[0]];
         next_best_nums.extend(
             best_nums
                 .windows(2)

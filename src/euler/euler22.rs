@@ -14,12 +14,12 @@ What is the total of all the name scores in the file?
 const LOWER_CASE_OFFSET: u8 = b'a' - 1;
 const UPPER_CASE_OFFSET: u8 = b'A' - 1;
 
-const FILE_CONTENTS: &'static str = include_str!("../../static/p022_names.txt");
+const FILE_CONTENTS: &str = include_str!("../../static/p022_names.txt");
 
 fn alphabetical_value(c: char) -> u8 {
-    if 'a' <= c && c <= 'z' {
+    if ('a'..='z').contains(&c) {
         return c as u8 - LOWER_CASE_OFFSET;
-    } else if 'A' <= c && c <= 'Z' {
+    } else if ('A'..='Z').contains(&c) {
         return c as u8 - UPPER_CASE_OFFSET;
     }
     0
@@ -35,7 +35,7 @@ fn normalize(entry: &str) -> &str {
 
 fn solve(contents: &str) -> usize {
     let mut names = contents.split(',').collect::<Vec<_>>();
-    names.sort();
+    names.sort_unstable();
     names
         .iter()
         .map(|entry| normalize(entry))

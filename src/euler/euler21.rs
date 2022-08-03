@@ -15,7 +15,7 @@ use std::collections::{HashMap, HashSet};
 use std::iter;
 
 fn sum_of_proper_divisors(number: usize, primes: &[usize]) -> usize {
-    get_divisors(number, &primes).iter().sum()
+    get_divisors(number, primes).iter().sum()
 }
 
 fn sum_of_proper_divisors_naive(number: usize) -> usize {
@@ -79,7 +79,7 @@ fn divisible_by(number: usize, divisor: usize) -> bool {
 fn primes_below(limit: usize) -> Vec<usize> {
     let mut is_composite = vec![false; limit];
     let mut primes = Vec::new();
-    for num in (2..limit).map(|num| num) {
+    for num in 2..limit {
         if is_composite[num] {
             continue;
         }
