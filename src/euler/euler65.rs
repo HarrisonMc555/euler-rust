@@ -80,12 +80,14 @@ mod test {
 
     #[test]
     fn test_e_expansion() {
-        let expected = vec![
+        let expansions = vec![
             2, 1, 2, 1, 1, 4, 1, 1, 6, 1, 1, 8, 1, 1, 10, 1, 1, 12, 1, 1, 14, 1, 1, 16, 1, 1, 18,
             1, 1, 20, 1, 1, 22, 1, 1, 24, 1,
         ];
-        let actual: Vec<_> = ExpansionE::new().take(expected.len()).collect();
-        assert_eq!(expected, actual);
+        for (i, &expected) in expansions.iter().enumerate() {
+            let actual = expansion_e(i as u64);
+            assert_eq!(expected, actual, "Expansion for {}", i);
+        }
     }
 
     #[test]
@@ -120,6 +122,6 @@ mod test {
     }
 
     fn sum_digits(num: u64) -> u64 {
-        super::sum_digits(BigUint::from(num), base)
+        super::sum_digits(BigUint::from(num), BASE)
     }
 }

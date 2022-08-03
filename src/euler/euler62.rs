@@ -86,24 +86,25 @@ mod test {
 
     #[test]
     fn test_find_cubes() {
-        let actual = find_cubes(2);
+        let actual = find_cubes(2).collect::<Vec<_>>();
         let expected = vec![27, 64];
         assert_eq!(expected, actual);
 
-        let actual = find_cubes(3);
+        let actual = find_cubes(3).collect::<Vec<_>>();
         let expected = vec![125, 216, 343, 512, 729];
         assert_eq!(expected, actual);
     }
 
     #[test]
     fn test_get_digits() {
-        let counter = get_digits(4827448);
-        let expected = Counter::init([4, 8, 2, 7, 4, 4, 8]);
-        assert_eq!(expected, counter);
-        assert_eq!(counter[&4], 3);
-        assert_eq!(counter[&8], 2);
-        assert_eq!(counter[&2], 1);
-        assert_eq!(counter[&7], 1);
-        assert_eq!(counter[&1], 0);
+        let digit_counts = get_digits(4827448);
+        //              0  1  2  3  4  5  6  7  8  9
+        let expected = [0, 0, 1, 0, 3, 0, 0, 1, 2, 0];
+        assert_eq!(expected, digit_counts);
+        assert_eq!(digit_counts[1], 0);
+        assert_eq!(digit_counts[2], 1);
+        assert_eq!(digit_counts[4], 3);
+        assert_eq!(digit_counts[7], 1);
+        assert_eq!(digit_counts[8], 2);
     }
 }
