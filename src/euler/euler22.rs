@@ -17,6 +17,8 @@ use std::fs;
 const LOWER_CASE_OFFSET: u8 = b'a' - 1;
 const UPPER_CASE_OFFSET: u8 = b'A' - 1;
 
+const FILE_CONTENTS: &'static str = include_str!("../../static/p022_names.txt");
+
 fn alphabetical_value(c: char) -> u8 {
     if 'a' <= c && c <= 'z' {
         return c as u8 - LOWER_CASE_OFFSET;
@@ -49,15 +51,10 @@ fn solve(contents: &str) -> usize {
         .sum()
 }
 
-fn get_contents(filename: &str) -> String {
-    let path = env::current_dir().unwrap().join(filename);
-    fs::read_to_string(path).unwrap()
-}
-
 const FILENAME: &str = "p022_names.txt";
 
 pub fn main() {
-    println!("{}", solve(&get_contents(FILENAME)));
+    println!("{}", solve(FILE_CONTENTS));
 }
 
 #[cfg(test)]
@@ -65,5 +62,5 @@ const ANSWER: usize = 871198282;
 
 #[test]
 fn test() {
-    assert_eq!(ANSWER, solve(&get_contents(FILENAME)));
+    assert_eq!(ANSWER, solve(FILE_CONTENTS));
 }
