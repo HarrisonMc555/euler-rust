@@ -11,9 +11,6 @@ obtain a score of 938 × 53 = 49714.
 What is the total of all the name scores in the file?
 */
 
-use std::env;
-use std::fs;
-
 const LOWER_CASE_OFFSET: u8 = b'a' - 1;
 const UPPER_CASE_OFFSET: u8 = b'A' - 1;
 
@@ -50,8 +47,6 @@ fn solve(contents: &str) -> usize {
         })
         .sum()
 }
-
-const FILENAME: &str = "p022_names.txt";
 
 pub fn main() {
     println!("{}", solve(FILE_CONTENTS));
