@@ -1,0 +1,21 @@
+[package]
+name = "euler-rust"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = "0.4"
+clap = { version = "3.2.16", features = ["derive"] }
+counter = "0.5.6"
+enumset = "1.0.11"
+fraction = "0.11.0"
+itertools = "0.8"
+lazy_static = "1.4.0"
+multiset = { git = "https://github.com/HarrisonMc555/multiset", branch = "implement-union-and-intersection" }
+num-bigint = "0.4"
+num-iter = "0.1"
+num-rational = "0.2"
+num-traits = "0.2"
+primal = "0.2"
