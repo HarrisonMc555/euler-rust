@@ -68,6 +68,7 @@ fn get_main(problem: usize) -> Option<Box<dyn Fn()>> {
         63 => euler::euler63::main,
         64 => euler::euler64::main,
         65 => euler::euler65::main,
+        67 => euler::euler67::main,
         _ => return None,
     }))
 }
