@@ -21,7 +21,7 @@ fn main() {
     let problem = args.problem;
     let main = match get_main(problem) {
         None => {
-            eprintln!("No solution found for problem {}", problem);
+            eprintln!("No implementation found for problem {}", problem);
             return;
         }
         Some(main) => main,
