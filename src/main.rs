@@ -1,6 +1,6 @@
+mod digits;
 mod euler;
 mod say;
-mod digits;
 
 #[macro_use]
 extern crate itertools;
@@ -23,7 +23,7 @@ fn main() {
         None => {
             eprintln!("No solution found for problem {}", problem);
             return;
-        },
+        }
         Some(main) => main,
     };
     main();

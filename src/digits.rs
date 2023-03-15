@@ -126,7 +126,7 @@ where
             } else {
                 self.started = true;
                 Some(0)
-            }
+            };
         }
         self.started = true;
         let v = (self.n.clone() % self.base.clone()).to_u8().unwrap();

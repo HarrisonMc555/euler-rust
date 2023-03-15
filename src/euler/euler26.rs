@@ -74,7 +74,7 @@ impl Digits {
                         from_digits_rems(&digits_rems[..index + 1]),
                         from_digits_rems(&digits_rems[index + 1..]),
                     )
-                }
+                };
             }
             digits_rems.push((quot, rem));
         }

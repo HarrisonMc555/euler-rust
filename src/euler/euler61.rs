@@ -99,9 +99,7 @@ pub fn main() {
     println!("{}", sum);
 }
 
-fn find_figurate_cycle(
-    by_leading_digits: &HashMap<Num, Vec<NumExtra>>,
-) -> Option<Vec<Num>> {
+fn find_figurate_cycle(by_leading_digits: &HashMap<Num, Vec<NumExtra>>) -> Option<Vec<Num>> {
     let mut cycle = Vec::new();
     let mut seen_figurates = EnumSet::empty();
     let mut seen_nums = HashSet::new();
@@ -136,7 +134,8 @@ fn find_figurate_cycle_helper(
                         seen_figurates,
                     );
                     if result.is_some() {
-                        let cycle_string = cycle.iter().map(|ne| (ne.0.num, ne.1)).collect::<Vec<_>>();
+                        let cycle_string =
+                            cycle.iter().map(|ne| (ne.0.num, ne.1)).collect::<Vec<_>>();
                         eprintln!("Cycle: {:?}", cycle_string);
                         return result;
                     }

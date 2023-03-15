@@ -17,7 +17,10 @@ const DIGIT_BASE: u32 = 10;
 const MAX_BASE: u32 = 10;
 
 pub fn main() {
-    let answer = (0..MAX_BASE).map(BigUint::from).flat_map(get_matching_power_num_digits).count();
+    let answer = (0..MAX_BASE)
+        .map(BigUint::from)
+        .flat_map(get_matching_power_num_digits)
+        .count();
     println!("{}", answer);
 }
 

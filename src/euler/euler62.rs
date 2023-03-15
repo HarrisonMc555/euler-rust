@@ -5,8 +5,8 @@ The cube, 41063625 (345^3), can be permuted to produce two other cubes: 56623104
 Find the smallest cube for which exactly five permutations of its digits are cube.
  */
 
-use std::collections::HashMap;
 use counter::Counter;
+use std::collections::HashMap;
 
 const BASE: usize = 10;
 const NUM_PERMUTATIONS: usize = 5;
@@ -27,7 +27,10 @@ pub fn main() {
 fn find_cubes(num_digits: usize) -> impl Iterator<Item = usize> {
     let min = int_pow(BASE, num_digits - 1);
     let max = int_pow(BASE, num_digits);
-    (1..).map(cube).skip_while(move |&n| n < min).take_while(move |&n| n < max)
+    (1..)
+        .map(cube)
+        .skip_while(move |&n| n < min)
+        .take_while(move |&n| n < max)
 }
 
 fn find_cube_permutations(num_digits: usize, num_permutations: usize) -> Option<Vec<usize>> {
